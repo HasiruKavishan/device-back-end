@@ -1,0 +1,12 @@
+# Spring properties
+spring:
+  application:
+    name: ms-device
+  data:
+    mongodb:
+      database: colomba-link
+      host: localhost
+      port: 27017
+# HTTP Server
+server:
+    port: ${PORT:8088} #${SERVER_PORT}   # HTTP (Tomcat) port

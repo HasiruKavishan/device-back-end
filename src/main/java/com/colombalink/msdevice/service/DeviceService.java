@@ -6,12 +6,10 @@ import com.colombalink.msdevice.entity.DeviceType;
 import com.colombalink.msdevice.error.DeviceException;
 import com.colombalink.msdevice.repository.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +29,7 @@ public class DeviceService {
         deviceDTO.setDeviceName("TMP_SEN_002");
         deviceDTO.setDeviceType(DeviceType.TEMPERATURE_SENSOR);
         deviceDTO.setReading(Math.random() * 100);
-        saveDeviceData(deviceDTO);
+//        saveDeviceData(deviceDTO);
     }
 
     public Device saveDeviceData(DeviceDTO deviceDTO) {
@@ -46,8 +44,16 @@ public class DeviceService {
         return deviceRepository.findById(deviceId).orElseThrow(() -> new DeviceException("Cannot find device Id" + deviceId));
     }
 
-    public List<Device> getAll() {
-        return deviceRepository.findAll();
+    public List<Device> getAll(String deviceName, DeviceType deviceType, Date startDate, Date endDate) {
+        if (startDate != null && deviceName != null) {
+            return deviceRepository.findByDeviceNameAndDeviceTypeAndCreatedDateBetween(deviceName, deviceType, startDate, endDate);
+        } else if (deviceName != null & startDate == null) {
+            return deviceRepository.findByDeviceNameAndDeviceType(deviceName, deviceType);
+        } else if (deviceName == null && startDate != null) {
+            return deviceRepository.findByDeviceTypeAndCreatedDateBetween(deviceType, startDate, endDate);
+        } else {
+            return deviceRepository.findAll();
+        }
     }
 
     public Device updateDeviceData(String deviceId, DeviceDTO deviceDTO) {

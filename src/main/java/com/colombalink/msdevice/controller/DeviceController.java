@@ -2,6 +2,7 @@ package com.colombalink.msdevice.controller;
 
 import com.colombalink.msdevice.dto.DeviceDTO;
 import com.colombalink.msdevice.entity.Device;
+import com.colombalink.msdevice.entity.DeviceType;
 import com.colombalink.msdevice.service.DeviceService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/device")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4201")
 public class DeviceController {
     private final DeviceService deviceService;
 
@@ -42,8 +45,11 @@ public class DeviceController {
 
     @ApiOperation(value = "Get All device data")
     @GetMapping("/get-all")
-    public List<Device> getAllDevice() {
-        return deviceService.getAll();
+    public List<Device> getAllDevice(@RequestParam(value = "name", required = false) String deviceName,
+                                     @RequestParam(value = "type", required = false, defaultValue = "TEMPERATURE_SENSOR") DeviceType deviceType,
+                                     @RequestParam(value = "startDate", required = false) Date startDate,
+                                     @RequestParam(value = "endDate", required = false) Date endDate) {
+        return deviceService.getAll(deviceName, deviceType, startDate, endDate);
     }
 
     @ApiOperation(value = "Update device Data")

@@ -3,6 +3,7 @@ package com.colombalink.msdevice.service;
 import com.colombalink.msdevice.dto.DeviceDTO;
 import com.colombalink.msdevice.entity.Device;
 import com.colombalink.msdevice.entity.DeviceType;
+import com.colombalink.msdevice.error.DeviceException;
 import com.colombalink.msdevice.repository.DeviceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -41,8 +42,8 @@ public class DeviceService {
         return device;
     }
 
-    public DeviceDTO getDevice(String deviceId) {
-        return new DeviceDTO();
+    public Device getDevice(String deviceId) {
+        return deviceRepository.findById(deviceId).orElseThrow(() -> new DeviceException("Cannot find device Id" + deviceId));
     }
 
     public List<Device> getAll() {
@@ -56,7 +57,7 @@ public class DeviceService {
     }
 
     public void deleteDevice(String deviceId) {
-//        Device device = deviceRepository.findById(deviceId).orElseThrow("");
+        deviceRepository.deleteById(deviceId);
     }
 
     private Device convertDtoToEntity(DeviceDTO deviceDTO) {

@@ -36,7 +36,7 @@ public class DeviceController {
 
     @ApiOperation(value = "Get device Data")
     @GetMapping("/{deviceId}")
-    public DeviceDTO getDevice(@PathVariable("deviceId") String deviceId) {
+    public Device getDevice(@PathVariable("deviceId") String deviceId) {
         return deviceService.getDevice(deviceId);
     }
 

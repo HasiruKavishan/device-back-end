@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,13 +22,13 @@ public class DeviceService {
         this.deviceRepository = deviceRepository;
     }
 
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 2000)
     public void reportCurrentTime() {
         DeviceDTO deviceDTO = new DeviceDTO();
-        deviceDTO.setDeviceName("TMP_SEN_002");
+        deviceDTO.setDeviceName("TMP_SEN_001");
         deviceDTO.setDeviceType(DeviceType.TEMPERATURE_SENSOR);
         deviceDTO.setReading(Math.random() * 100);
-//        saveDeviceData(deviceDTO);
+        saveDeviceData(deviceDTO);
     }
 
     public Device saveDeviceData(DeviceDTO deviceDTO) {
